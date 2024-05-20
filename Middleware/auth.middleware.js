@@ -2,9 +2,8 @@ const jwt = require("jsonwebtoken");
 const {Users} = require("../models/Users.model");
 exports.verifyJWT = async (req, res, next) => {
   try {
-    const token =
-      req.cookies["access_token"] ||
-      req.header("Authorization").replace("Bearer ", "");
+    const token = req.cookies["access_token"] ||req.header("Authorization").replace("Bearer ", "")
+    
     if (!token) {
       return res.status(400).json({
         message: "Unauthorize request",
