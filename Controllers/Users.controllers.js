@@ -76,7 +76,7 @@ exports.loginUsers = async (req, res) => {
         message: "Invalid users credentials",
       });
     }
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    const { accessToken } = await generateAccessAndRefreshTokens(
       user._id
     );
     const options = {
@@ -85,12 +85,10 @@ exports.loginUsers = async (req, res) => {
     };
     return res
       .status(200)
-      .cookie("access_token", accessToken, options)
-      .cookie("refresh_Token", refreshToken, options)
+      .cookie("access-token", accessToken, options)
       .json({
-        user: user,
         accessToken,
-        refreshToken,
+        status:true
       });
   } catch (error) {
     return res.status(500).json(error.message);
@@ -109,7 +107,7 @@ exports.logoutUsers = async (req, res) => {
       secure: true,
     };
     res
-      .clearCookie("access_token", options)
+      .clearCookie("access-token", options)
       .clearCookie("refresh_Token", options)
       .json({
         message: "user logout SuccessFully",

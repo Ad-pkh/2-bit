@@ -10,6 +10,7 @@ connectToDb();
 //
 const userRouter = require("./Router/users.routes");
 const blogRouter = require("./Router/blog.routes");
+const getCategory=require("./Router/category.routes")
 
 // middleware
 app.use(cors({
@@ -19,10 +20,20 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
+app.use(
+  session({
+    secret: "keyboard cat",
+    cookie: {
+      maxAge: 2 * 24 * 60 * 60 * 1000, 
+    },
+    resave: false, 
+    saveUninitialized: false,
+  })
+);
 //
 app.use("/api", userRouter.router);
 app.use("/api", blogRouter.router);
+app.use("/api", getCategory.router);
 // 
 app.use(express.static(path.join(__dirname,  "build")));
 app.get("*", (_, res) => {

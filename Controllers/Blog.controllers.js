@@ -1,9 +1,9 @@
 const { Blog } = require("../models/Blog.model");
-const { default: mongoose } = require("mongoose");
 const { uploadOnCloudinary } = require("../utils/cloudinary");
 exports.createBlog = async (req, res) => {
   try {
     const { title, description, category } = req.body;
+    console.log(req.body)
     const { id } = req.user;
     const thumbnailLocalPath = req.files?.thumbnail[0]?.path;
     if (!thumbnailLocalPath) {
