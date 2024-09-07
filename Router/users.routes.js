@@ -18,5 +18,5 @@ router
   .get("/checkuser",verifyJWT, checkUser)
   .patch("/updateAddress",verifyJWT,updateUserAddress)
   .post('/ResetPasswordLink',ResetPasswordLink)
-
+//route
 exports.router = router;
