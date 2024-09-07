@@ -18,6 +18,12 @@ const userSchema = new Schema(
       required: true,
     },
    
+    role:{
+      type:String,
+      enum: ['donor', 'organization'],
+      default:'donor',
+      required:true
+    },
     resetPasswordToken: {
       type: String,
       default: "",

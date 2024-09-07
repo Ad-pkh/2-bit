@@ -20,6 +20,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 exports.CreateUsers = async (req, res) => {
   try {
     const { email, username, password } = req.body;
+    console.log(req.body,"body")
     if (
       [email, username, password].some((field) => !field || field.trim() === "")
     ) {
