@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const { connectToDb } = require("./Db/connection");
+const { connectToDb } = require("./database/connection");
 const app = express();
 
 connectToDb();
@@ -23,9 +23,9 @@ app.use(
   session({
     secret: "keyboard cat",
     cookie: {
-      maxAge: 2 * 24 * 60 * 60 * 1000, 
+      maxAge: 2 * 24 * 60 * 60 * 1000,
     },
-    resave: false, 
+    resave: false,
     saveUninitialized: false,
   })
 );
