@@ -70,7 +70,7 @@ userSchema.methods.generatesRefreshToken = async function () {
     },
     process.env.RefreshTokenSecret,
     {
-      expiresIn: "2h",
+      expiresIn: "2h",//time
     }
   );
 };

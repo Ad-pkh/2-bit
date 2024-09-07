@@ -153,7 +153,7 @@ exports.refreshaccessToken = async (req, res) => {
       refreshToken,
     });
 };
-// checkUsers
+// checkUser
 exports.checkUser = async (req, res) => {
   if (req.user) {
     return res.status(200).json(req.user);
