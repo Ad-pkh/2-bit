@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,59 +9,45 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "./services/AuthService";
-import { SelectItem } from "./components/ui/select";
-// import { register } from "../services/users";
-// import toast from "react-hot-toast";
-// import { getToken } from "@/utils/token";
+import useSignup from "./hooks/useSignup";
+import toast from "react-hot-toast";
 
 export default function Signup() {
-  // const navigate = useNavigate();
-  // const registrationForm = useRef();
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    address: "",
+    role: "",
+    username: "",
+  });
 
-  const [role,setRole]=useState("")
-  const [email,setEmail]=useState("")
-  const [name,setName]=useState("")
-  const [password,setPassword]=useState("")
+  // Handle input changes
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
-      
-    
-      const { data } = await signup()
-      if (data) {
-        toast.success(data.message);
+      const res = await useSignup(data);
+      if (res) {
+        toast.success(res.message);
         setTimeout(() => {
-          navigate("/login");
+          // Redirect or do something else, e.g., navigate("/login");
         }, 3000);
       }
     } catch (e) {
-
-      setError(error);
-      toast.error(error);
-    } finally {
-      setTimeout(() => {
-        setError("");
-        setMessage("");
-      }, 1000);
+      toast.error(e.message || "Signup failed. Please try again.");
     }
   };
 
-  // useEffect(() => {
-  //   const token = getToken();
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // });
   return (
     <div className="bg-zinc-100 h-screen flex items-center">
       <Card className="mx-auto max-w-sm">
-        {/* {error && <Toast msg={error} />} */}
-        {/* {message && <Toast msg={message} />} */}
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>
@@ -69,17 +55,30 @@ export default function Signup() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            className="grid gap-3"
-            // ref={registrationForm}
-            onSubmit={(e) => handleSubmit(e)}
-          >
-            <div className="grid grid-cols-0.5 ">
-              <div className="grid gap-2 w-full">
-                <Label htmlFor="first-name">Name</Label>
-                <Input name="name" placeholder="Sanish Tamang" required onChange={((e)=>(e.target.value))}/>
-              </div>
+          <form className="grid gap-3" onSubmit={handleSubmit}>
+            {/* Username input (Name) */}
+            <div className="grid gap-2 w-full">
+              <Label htmlFor="username">Name</Label>
+              <Input
+                name="username"
+                placeholder="Sanish Tamang"
+                required
+                onChange={handleChange}
+              />
             </div>
+
+            {/* Address input */}
+            <div className="grid gap-2 w-full">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                name="address"
+                placeholder="Enter your address"
+                required
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Email input */}
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -87,27 +86,44 @@ export default function Signup() {
                 type="email"
                 placeholder="m@example.com"
                 required
-                onChange={((e)=>(e.target.value))}
+                onChange={handleChange}
               />
             </div>
+
+            {/* Role input (select or text input) */}
             <div className="grid gap-2">
-              <Label htmlFor="role">role</Label>
-              <Input name="role" type="text" onChange={((e)=>(e.target.value))} />
+              <Label htmlFor="role">Role</Label>
+              <select
+                name="role"
+                required
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="">Select Role</option>
+                <option value="Donor">Donor</option>
+                <option value="Organization">Organization</option>
+              </select>
             </div>
+
+            {/* Password input */}
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <select
-              onChange={((e)=>(e.target.value))}
-              >
-                <SelectItem>Donar</SelectItem>
-                <SelectItem>organization</SelectItem>
-              </select>
-              {/* <Input name="password" type="password" onChange={((e)=>(e.target.value))} /> */}
+              <Input
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                required
+                onChange={handleChange}
+              />
             </div>
+
+            {/* Submit button */}
             <Button type="submit" className="w-full">
               Create an account
             </Button>
           </form>
+
+          {/* Login link */}
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link to="/login" className="underline">

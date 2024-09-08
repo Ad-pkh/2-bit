@@ -1,4 +1,4 @@
-const  {Users}  =require ('../models/Users.model')
+const { Users } = require("../models/Users.model");
 const jwt = require("jsonwebtoken");
 const { SendMail } = require("../utils/mailsent");
 const generateAccessAndRefreshTokens = async (userId) => {
@@ -20,7 +20,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 exports.CreateUsers = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-    console.log(req.body,"body")
+    console.log(req.body, "body");
     if (
       [email, username, password].some((field) => !field || field.trim() === "")
     ) {
@@ -52,6 +52,7 @@ exports.CreateUsers = async (req, res) => {
 
     return res.status(200).json(findUser);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -77,20 +78,15 @@ exports.loginUsers = async (req, res) => {
         message: "Invalid users credentials",
       });
     }
-    const { accessToken } = await generateAccessAndRefreshTokens(
-      user._id
-    );
+    const { accessToken } = await generateAccessAndRefreshTokens(user._id);
     const options = {
       httpOnly: true,
       secure: true,
     };
-    return res
-      .status(200)
-      .cookie("access-token", accessToken, options)
-      .json({
-        accessToken,
-        status:true
-      });
+    return res.status(200).cookie("access-token", accessToken, options).json({
+      accessToken,
+      status: true,
+    });
   } catch (error) {
     return res.status(500).json(error.message);
   }

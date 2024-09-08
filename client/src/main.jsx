@@ -12,6 +12,9 @@ createRoot(document.getElementById("root")).render(
       <Toaster position="top-center" reverseOrder={false} />
       <Navbar />
       <App />
+      <div className="w-full">
+        <img className="w-full" src="/Frame 576.jpg" alt="" />
+      </div>
     </BrowserRouter>
   </StrictMode>
 );
